@@ -1,0 +1,11 @@
+prefix=/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/deps/libjpeg-turbo
+exec_prefix=/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/deps/libjpeg-turbo
+libdir=/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/deps/libjpeg-turbo/lib
+includedir=/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/deps/libjpeg-turbo/include
+
+Name: libturbojpeg
+Description: A SIMD-accelerated JPEG codec that provides the TurboJPEG API
+Version: 3.2.1
+
+Libs: -L${libdir} -lturbojpeg
+Cflags: -I${includedir}

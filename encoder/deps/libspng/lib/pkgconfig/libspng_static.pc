@@ -1,0 +1,12 @@
+prefix=/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/deps/libspng
+exec_prefix=/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/deps/libspng
+libdir=/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/deps/libspng/lib
+includedir=/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/deps/libspng/include/
+
+Name: libspng_static
+Description: PNG decoding and encoding library
+Version: 0.7.4
+Requires: zlib
+Libs: -L${libdir} -lspng_static
+Libs.private: -lm
+Cflags: -I${includedir}

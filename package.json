@@ -1,0 +1,14 @@
+{
+  "name": "image-fmt-benchmark",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "web:dev": "bun run --cwd web dev",
+    "web:build": "bun run --cwd web build",
+    "bench": "node benchmark.ts",
+    "score": "bun score.ts",
+    "verify:pixels": "bun verifyPixels.ts",
+    "test": "vitest run --config vitest.config.ts --configLoader runner"
+  }
+}

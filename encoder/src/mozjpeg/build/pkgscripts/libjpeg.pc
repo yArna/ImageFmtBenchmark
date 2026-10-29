@@ -1,0 +1,10 @@
+prefix=/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/deps/mozjpeg
+exec_prefix=/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/deps/mozjpeg
+libdir=/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/deps/mozjpeg/lib
+includedir=/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/deps/mozjpeg/include
+
+Name: libjpeg
+Description: A SIMD-accelerated JPEG codec that provides the libjpeg API
+Version: 5.0.0
+Libs: -L${libdir} -ljpeg
+Cflags: -I${includedir}

@@ -1,0 +1,10 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/src/libjpeg-turbo/build/cmake_install.cmake",
+		"/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/src/libjpeg-turbo/build/simd/cmake_install.cmake",
+		"/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/src/libjpeg-turbo/build/src/spng/cmake_install.cmake",
+		"/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/src/libjpeg-turbo/build/src/md5/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

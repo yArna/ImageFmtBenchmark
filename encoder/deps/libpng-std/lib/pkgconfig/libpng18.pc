@@ -1,0 +1,12 @@
+prefix=/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/deps/libpng-std
+exec_prefix=/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/deps/libpng-std
+libdir=/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/deps/libpng-std/lib
+includedir=/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/deps/libpng-std/include/libpng18
+
+Name: libpng
+Description: Loads and saves PNG files
+Version: 1.8.0
+Requires.private: zlib
+Libs: -L${libdir} -lpng18
+Libs.private: -lz -lm
+Cflags: -I${includedir}

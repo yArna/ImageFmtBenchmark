@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/src/mozjpeg/build/cmake_install.cmake",
+		"/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/src/mozjpeg/build/simd/cmake_install.cmake",
+		"/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/src/mozjpeg/build/md5/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

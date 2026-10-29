@@ -1,0 +1,15 @@
+# Local AI tool configuration
+.commandcode/
+.claude/
+.workbuddy-ai/
+
+# Dependencies and build output
+node_modules/
+dist/
+
+# macOS metadata
+.DS_Store
+
+# Benchmark output and WebAssembly build cache
+/result/
+/encoder/wasm/build/

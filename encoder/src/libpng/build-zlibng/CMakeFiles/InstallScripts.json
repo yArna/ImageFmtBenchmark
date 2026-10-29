@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/yarna/Project/MoonvyRoot/products/Apps/ImageFmtBenchmark/encoder/src/libpng/build-zlibng/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

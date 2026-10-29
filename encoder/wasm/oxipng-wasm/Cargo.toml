@@ -1,0 +1,18 @@
+[package]
+name = "ifb-oxipng-wasm"
+version = "0.1.0"
+edition = "2021"
+description = "ImageFmtBenchmark 的 oxipng WASM 封装（单线程，无 CLI 依赖）"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+oxipng = { path = "../../src/oxipng", default-features = false, features = ["zopfli", "freestanding"] }
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
