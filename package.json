@@ -6,6 +6,7 @@
   "scripts": {
     "web:dev": "bun run --cwd web dev",
     "web:build": "bun run --cwd web build",
+    "web:assets:publish": "bun run --cwd web assets:publish",
     "bench": "node benchmark.ts",
     "score": "bun score.ts",
     "verify:pixels": "bun verifyPixels.ts",

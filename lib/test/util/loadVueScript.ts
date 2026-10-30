@@ -13,9 +13,9 @@ export function loadVueScript(path: string, bindings: Record<string, unknown>, n
 }
 
 /** 读取 Options API 组件供 Vue 自身运行其 data、computed、methods 和 watch。 */
-export function loadVueOptions(path: string, defineComponent: Function) {
+export function loadVueOptions(path: string, defineComponent: Function, bindings: Record<string, unknown> = {}) {
   const source = readFileSync(path, 'utf8').split('<script lang="ts">')[1].split('</script>')[0]
     .replace(/^import[\s\S]*?from\s+['"][^'"]+['"];?/gm, '');
   const code = ts.transpileModule(source, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS } }).outputText;
-  return new Function('exports', 'defineComponent', `${code}\nreturn exports.default;`)({}, defineComponent);
+  return new Function('exports', 'defineComponent', ...Object.keys(bindings), `${code}\nreturn exports.default;`)({}, defineComponent, ...Object.values(bindings));
 }

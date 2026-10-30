@@ -1,7 +1,11 @@
+import * as assetTools from '../../web/src/lib/assetUrls';
 import { ref, computed } from '../../web/node_modules/vue';
 import * as dataTools from '../benchmarkData';
 import * as engine from '../../web/src/components/dither-kit/ditherEngine';
 import { loadVueScript } from './util/loadVueScript';
+
+vi.stubGlobal('__IFB_SITE_BASE__', '/');
+vi.stubGlobal('__IFB_RAW_BASE__', '');
 
 /** 用少量可控记录覆盖不同编码模式和力度，推荐结果不受真实机器计时波动影响。 */
 function makeFixture() {
@@ -37,7 +41,7 @@ async function openViews(scores?: (number | null)[]) {
   scores?.forEach((score, index) => { fixture.records[index][19] = score; });
   let mount = async () => {};
   const app = loadVueScript('web/src/App.vue', {
-    ref, computed, ...dataTools, ...engine,
+    ref, computed, ...dataTools, ...assetTools, ...engine,
     onMounted: (callback: () => Promise<void>) => { mount = callback; },
     fetch: async () => ({ json: async () => fixture }),
   }, [

@@ -212,6 +212,7 @@
 </template>
 
 <script setup lang="ts">
+import { buildImagePreviewUrl, siteAssetUrl } from '../lib/assetUrls';
 import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue';
 import OnlineCompareGrid from './OnlineCompareGrid.vue';
 import OnlineResultTable from './OnlineResultTable.vue';
@@ -424,7 +425,7 @@ async function loadFile(file: File) {
 async function loadBenchmarkImage() {
   errorMessage.value = '';
   if (!props.benchmarkImageName) return;
-  const url = `/source-image/${encodeURIComponent(props.benchmarkImageName)}?v=${encodeURIComponent(props.dataVersion ?? '')}`;
+  const url = buildImagePreviewUrl('source-image', props.benchmarkImageName, props.dataVersion ?? '');
   const blob = await fetch(url).then((r) => (r.ok ? r.blob() : null)).catch(() => null);
   if (!blob) {
     errorMessage.value = `无法加载基准测试图 ${props.benchmarkImageName}`;
@@ -719,7 +720,7 @@ onMounted(async () => {
         return;
       }
       try {
-        const resp = await fetch(`/wasm/${def.file}`, { method: 'HEAD' });
+        const resp = await fetch(siteAssetUrl(`wasm/${def.file}`), { method: 'HEAD' });
         if (resp.ok) ids.add(def.id);
       } catch {
         /* 未构建 */

@@ -486,10 +486,10 @@
                     @mousedown="onVpMouseDown($event)"
                   >
                     <div class="ov-vp-inner" :style="vpTransformStyle">
-                      <img
+                      <PreviewImage
                         v-if="card.previewUrl"
                         :src="card.previewUrl"
-                        :srcset="`${card.previewUrl} 2x`"
+                        :density="2"
                         :alt="card.displayName"
                         class="ov-vp-img"
                         draggable="false"
@@ -1150,7 +1150,7 @@
               aria-label="访问 Moonvy 月维官网"
             >
               <img
-                src="/moonvy_loog_full_cn_dark.svg"
+                :src="siteAssetUrl('moonvy_loog_full_cn_dark.svg')"
                 alt="Moonvy 月维"
                 class="footer-logo-img"
               />
@@ -1164,12 +1164,14 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { buildImagePreviewUrl, findExactEncodingRecord, formatEncodingQuality, getActualQuality, groupEncodingModes, normalizeEncodingRecord, summarizeVolume } from '../../lib/benchmarkData';
+import { buildImagePreviewUrl, siteAssetUrl } from './lib/assetUrls';
+import { findExactEncodingRecord, formatEncodingQuality, getActualQuality, groupEncodingModes, normalizeEncodingRecord, summarizeVolume } from '../../lib/benchmarkData';
 import DitherAreaChart, { type AreaSeriesItem } from './components/dither-kit/DitherAreaChart.vue';
 import DitherBarChart, { type BarSeriesItem } from './components/dither-kit/DitherBarChart.vue';
 import DitherAvatar from './components/dither-kit/DitherAvatar.vue';
 import DitherGradient from './components/dither-kit/DitherGradient.vue';
 import OnlineEncoder from './components/OnlineEncoder.vue';
+import PreviewImage from './components/PreviewImage.vue';
 import ImageSplitComparator, {
   type CompImageMeta,
   type CompEncoderConfig,
@@ -2692,7 +2694,7 @@ function loadRecordIntoSlot(slot: 'A' | 'B', rec: CompRecord) {
 
 onMounted(async () => {
   try {
-    const res = await fetch('/benchmark-data.json', { cache: 'no-store' });
+    const res = await fetch(siteAssetUrl('benchmark-data.json'), { cache: 'no-store' });
     const raw = await res.json();
     const expanded: CompRecord[] = (raw.records as any[][]).map((row) => normalizeEncodingRecord({
       image: row[0],

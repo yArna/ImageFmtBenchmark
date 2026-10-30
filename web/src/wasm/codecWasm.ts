@@ -1,3 +1,5 @@
+import { siteAssetUrl } from '../lib/assetUrls';
+
 /**
  * 在线编码器（WASM）统一加载与调用层。
  *
@@ -262,7 +264,7 @@ export const WASM_ENCODERS: WasmEncoderDef[] = [
   },
 ];
 
-export const WASM_BASE = '/wasm/';
+export const WASM_BASE = siteAssetUrl('wasm/');
 
 /* ------------------------------------------------------------------ */
 /* 模块加载                                                            */
@@ -501,6 +503,45 @@ export async function encodeWithWasm(
   }
 
   return result;
+}
+
+/** 复用在线编码器的 JXL 解码内核，为无服务器的图片对比生成 PNG。 */
+export async function decodeJxlPreview(bytes: Uint8Array): Promise<Blob> {
+  const def = WASM_ENCODERS.find((item) => item.id === 'cjxl')!;
+  const mod = await loadEncoder(def);
+  if (!mod._ifb_decode || !mod._ifb_dec_ptr || !mod._ifb_dec_w || !mod._ifb_dec_h || !mod._ifb_dec_channels) {
+    throw new Error('JXL 解码器不可用');
+  }
+  const ptr = mod._ifb_alloc(bytes.length);
+  if (!ptr) throw new Error('JXL 解码内存不足');
+  try {
+    mod.HEAPU8.set(bytes, ptr);
+    if (mod._ifb_decode(ptr, bytes.length) !== 0) throw new Error('JXL 解码失败');
+  } finally {
+    mod._ifb_free_ptr(ptr, bytes.length);
+  }
+  const width = mod._ifb_dec_w();
+  const height = mod._ifb_dec_h();
+  const channels = mod._ifb_dec_channels();
+  if (width <= 0 || height <= 0 || ![1, 2, 3, 4].includes(channels)) throw new Error('JXL 解码尺寸或通道无效');
+  const pixels = mod.HEAPU8.subarray(mod._ifb_dec_ptr(), mod._ifb_dec_ptr() + width * height * channels);
+  const rgba = new Uint8ClampedArray(width * height * 4);
+  for (let i = 0, j = 0; i < rgba.length; i += 4, j += channels) {
+    rgba[i] = pixels[j];
+    rgba[i + 1] = pixels[j + (channels < 3 ? 0 : 1)];
+    rgba[i + 2] = pixels[j + (channels < 3 ? 0 : 2)];
+    rgba[i + 3] = channels === 2 || channels === 4 ? pixels[j + channels - 1] : 255;
+  }
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('无法创建 JXL 预览画布');
+  ctx.putImageData(new ImageData(rgba, width, height), 0, 0);
+  return new Promise((resolve, reject) => canvas.toBlob((blob) => {
+    if (blob) resolve(blob);
+    else reject(new Error('JXL 预览生成失败'));
+  }, 'image/png'));
 }
 
 export function formatBytes(bytes: number): string {

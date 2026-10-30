@@ -381,7 +381,8 @@
 
 <script setup lang="ts">
 import ComparatorImage from './ComparatorImage.vue';
-import { buildImagePreviewUrl, findExactEncodingRecord, formatEncodingQuality, type IPixelVerification } from '../../../lib/benchmarkData';
+import { buildImagePreviewUrl } from '../lib/assetUrls';
+import { findExactEncodingRecord, formatEncodingQuality, type IPixelVerification } from '../../../lib/benchmarkData';
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import {
   ORIGINAL_ENCODER_ID,

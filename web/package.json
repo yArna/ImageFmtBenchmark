@@ -9,6 +9,7 @@
     "firefox >= 100"
   ],
   "scripts": {
+    "assets:publish": "python3 scripts/publish-assets.py",
     "dev": "rsbuild dev",
     "build": "rsbuild build",
     "build:wasm": "bash ../encoder/wasm/build_wasm.sh",

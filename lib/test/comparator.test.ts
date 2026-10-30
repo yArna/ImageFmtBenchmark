@@ -1,7 +1,11 @@
+import * as assetTools from '../../web/src/lib/assetUrls';
 import { ref, computed, reactive, watch, nextTick, createRenderer, defineComponent, h } from '../../web/node_modules/vue';
 import * as dataTools from '../benchmarkData';
 import * as engine from '../../web/src/components/dither-kit/ditherEngine';
 import { loadVueScript, loadVueOptions } from './util/loadVueScript';
+
+vi.stubGlobal('__IFB_SITE_BASE__', '/');
+vi.stubGlobal('__IFB_RAW_BASE__', '');
 
 /** 运行对比器的真实参数匹配与视口交互；视口尺寸固定以便校验像素坐标。 */
 function openComparator(pixelRatio = 1) {
@@ -27,7 +31,7 @@ function openComparator(pixelRatio = 1) {
     ref, computed, watch, window: screenWindow,
     onMounted: (callback: () => void) => { mount = callback; },
     onUnmounted: (callback: () => void) => { unmount = callback; },
-    ...dataTools, ...engine, defineProps: () => props, defineEmits: () => () => {},
+    ...dataTools, ...assetTools, ...engine, defineProps: () => props, defineEmits: () => () => {},
   }, ['qualityLabel', 'encoderModeLabel', 'findBestRecord', 'zoom', 'panX', 'panY', 'splitX', 'setZoom', 'onWheelZoom', 'fitViewport', 'onStageMouseDown', 'onStageMouseMove', 'onStageMouseUp', 'compareMode', 'stageRef', 'urlA', 'urlB', 'origUrl', 'resetViewport', 'panZoomStyle', 'pixelRatio', 'updatePixelRatio']);
   const stage = { clientWidth: 600, clientHeight: 520, clientLeft: 0, clientTop: 0, getBoundingClientRect: () => ({ left: 0, top: 0 }) };
   app.state.stageRef.value = stage;
@@ -112,7 +116,7 @@ test('数据版本变化更新源图和产物地址，缺少记录仍不回退�
 
 /** 用 Vue 自身的无 DOM 渲染器执行 Options API，请求完成顺序保持可控。 */
 function openImage() {
-  const component = loadVueOptions('web/src/components/ComparatorImage.vue', defineComponent);
+  const component = loadVueOptions('web/src/components/ComparatorImage.vue', defineComponent, { PreviewImage: {} });
   component.render = () => null;
   const props = reactive({ src: '/result-file/a.png?v=1', alt: 'test', width: 100, height: 100, zoom: 1, pixelRatio: 1, transformStyle: {}, side: 'left' });
   const instance = ref<any>(null);
@@ -127,7 +131,7 @@ function openImage() {
 
 /** 构造与 DOM 属性一致的请求事件，不模拟图片解码本身。 */
 function imageEvent(src: string) {
-  return { currentTarget: { getAttribute: () => src } };
+  return { target: { dataset: { requestUrl: src } } };
 }
 
 test('新请求隐藏旧图并忽略旧请求的延迟完成事件', async () => {

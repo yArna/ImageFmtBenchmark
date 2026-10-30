@@ -1,7 +1,7 @@
 <template>
   <div class="ComparatorImage">
     <div class="image-layer" :style="transformStyle">
-      <img
+      <PreviewImage
         v-if="src"
         :key="requestUrl"
         v-show="state === 'ready'"
@@ -25,12 +25,14 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue';
+import PreviewImage from './PreviewImage.vue';
 
 /** 图片请求状态与参数记录分开呈现；失败时不展示上一张图片。 */
 type IImageState = 'missing' | 'loading' | 'ready' | 'error';
 
 /** 根据原图尺寸直接计算展示尺寸，状态提示不随图片缩放和平移。 */
 export default defineComponent({
+  components: { PreviewImage },
   props: {
     /** 当前实际产物地址，包含数据版本。 */
     src: { type: String, required: true },
@@ -55,7 +57,7 @@ export default defineComponent({
   methods: {
     /** 忽略旧请求的延迟事件，避免覆盖新图片的加载状态。 */
     isCurrentRequest(event: Event): boolean {
-      return (event.currentTarget as HTMLImageElement).getAttribute('src') === this.requestUrl;
+      return (event.target as HTMLImageElement).dataset.requestUrl === this.requestUrl;
     },
     onImageLoad(event: Event) {
       if (this.isCurrentRequest(event)) this.state = 'ready';
